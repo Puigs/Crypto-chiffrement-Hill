@@ -1,4 +1,3 @@
-const { arg } = require("mathjs");
 const utils = require("./utils.js");
 
 function encode(args) {
@@ -10,7 +9,8 @@ function encode(args) {
     if (args == null) {
         return;
     }
-    if (utils.check_if_reversible(args[1]) != 0) {
+    if (utils.get_reversible(args[1]) == 0) {
+        console.log("The matrice is not reversible");
         return;
     }
     if (args[0].length % 2 == 1) {
@@ -22,10 +22,6 @@ function encode(args) {
         ret += String.fromCharCode(tmp[0] + 97);
         ret += String.fromCharCode(tmp[1] + 97);
     }
-    /*
-    if (odd == 1)
-        ret = ret.slice(0, -1);
-    */
     console.log(ret);
 }
 

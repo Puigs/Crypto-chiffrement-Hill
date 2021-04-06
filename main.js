@@ -11,9 +11,8 @@ function help() {
 function main() {
     if (args[0] == "encode") {
         encode.encode(args);
-        console.log("Encode function in progress");
     } else if (args[0] == "decode") {
-        console.log("Decode function in progress");
+        decode.decode(args);
     } else {
         help();
     }
