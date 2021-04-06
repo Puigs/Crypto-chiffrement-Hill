@@ -57,28 +57,57 @@ function xgcd(a, b) {
     return [y, x-y*Math.floor(a/b), d];
   }
 
+  function modInverse(a, m) {
+    // validate inputs
+    [a, m] = [Number(a), Number(m)]
+    if (Number.isNaN(a) || Number.isNaN(m)) {
+      return NaN // invalid input
+    }
+    a = (a % m + m) % m
+    if (!a || m < 2) {
+      return NaN // invalid input
+    }
+    // find the gcd
+    const s = []
+    let b = m
+    while(b) {
+      [a, b] = [b, a % b]
+      s.push({a, b})
+    }
+    if (a !== 1) {
+      return NaN // inverse does not exists
+    }
+    // find the inverse
+    let x = 1
+    let y = 0
+    for(let i = s.length - 2; i >= 0; --i) {
+      [x, y] = [y,  x - y * Math.floor(s[i].a / s[i].b)]
+    }
+    return (y % m + m) % m
+  }
+
 function inverser_modulaire_determinant(array) {
     var nb = (array[0]) * (array[3]) - (array[1]) * (array[2]);
-    //console.log("Test", xgcd(nb, 26));
+    console.log("Test", modInverse(nb, 26));
     //nb = nb % 26;
-    var ret = xgcd(nb, 26);
-    if (ret[2] != 1) {
+    var ret = modInverse(nb, 26);
+    /*if (ret[2] != 1) {
         console.log("The Key Matrice isn't reversible");
         return (0);
-    }
-    return ret[0];
+    }*/
+    return ret;
 }
 
 function reverse_matrice(array) {
     var ret = new Array;
     var tmp;
 
-    //console.log(get_reversible(array));
+    console.log(get_reversible(array));
     ret.push((array.charCodeAt(3) - 97) )//* get_reversible(array) % 26);
     ret.push(((array.charCodeAt(1) - 97) * -1) )//* get_reversible(array) % 26);
     ret.push(((array.charCodeAt(2) - 97) * -1) )//* get_reversible(array) % 26);
     ret.push((array.charCodeAt(0) - 97) )//* get_reversible(array) % 26);
-    //console.log(inverser_modulaire_determinant(ret));
+    console.log(inverser_modulaire_determinant(ret));
     tmp = inverser_modulaire_determinant(ret);
     if (tmp == 0)
         return new Array;
@@ -87,7 +116,7 @@ function reverse_matrice(array) {
             ret[i] = ret[i] + 26;
         ret[i] = ret[i] * tmp % 26;
     }
-    //console.log("Reverse Matrice", ret);
+    console.log("Reverse Matrice", ret);
     return ret;
 }   
 
